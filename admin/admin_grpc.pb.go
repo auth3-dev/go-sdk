@@ -20,6 +20,7 @@ const _ = grpc.SupportPackageIsVersion7
 type AdminClient interface {
 	CreateIdentity(ctx context.Context, in *CreateIdentityRequest, opts ...grpc.CallOption) (*CreateIdentityResponse, error)
 	GetIdentity(ctx context.Context, in *GetIdentityRequest, opts ...grpc.CallOption) (*GetIdentityResponse, error)
+	GetIdentityByIdentifier(ctx context.Context, in *GetIdentityByIdentifierRequest, opts ...grpc.CallOption) (*GetIdentityByIdentifierResponse, error)
 	GetIdentitiesByAttribute(ctx context.Context, in *GetIdentitiesByAttributeRequest, opts ...grpc.CallOption) (*GetIdentitiesByAttributeResponse, error)
 	GetIdentities(ctx context.Context, in *GetIdentitiesRequest, opts ...grpc.CallOption) (*GetIdentitiesResponse, error)
 	UpdateIdentity(ctx context.Context, in *UpdateIdentityRequest, opts ...grpc.CallOption) (*UpdateIdentityResponse, error)
@@ -72,6 +73,15 @@ func (c *adminClient) CreateIdentity(ctx context.Context, in *CreateIdentityRequ
 func (c *adminClient) GetIdentity(ctx context.Context, in *GetIdentityRequest, opts ...grpc.CallOption) (*GetIdentityResponse, error) {
 	out := new(GetIdentityResponse)
 	err := c.cc.Invoke(ctx, "/depot.devtools.auth.v0.identity.admin.Admin/GetIdentity", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *adminClient) GetIdentityByIdentifier(ctx context.Context, in *GetIdentityByIdentifierRequest, opts ...grpc.CallOption) (*GetIdentityByIdentifierResponse, error) {
+	out := new(GetIdentityByIdentifierResponse)
+	err := c.cc.Invoke(ctx, "/depot.devtools.auth.v0.identity.admin.Admin/GetIdentityByIdentifier", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -354,6 +364,7 @@ func (c *adminClient) GetUserBaseStatistics(ctx context.Context, in *GetUserBase
 type AdminServer interface {
 	CreateIdentity(context.Context, *CreateIdentityRequest) (*CreateIdentityResponse, error)
 	GetIdentity(context.Context, *GetIdentityRequest) (*GetIdentityResponse, error)
+	GetIdentityByIdentifier(context.Context, *GetIdentityByIdentifierRequest) (*GetIdentityByIdentifierResponse, error)
 	GetIdentitiesByAttribute(context.Context, *GetIdentitiesByAttributeRequest) (*GetIdentitiesByAttributeResponse, error)
 	GetIdentities(context.Context, *GetIdentitiesRequest) (*GetIdentitiesResponse, error)
 	UpdateIdentity(context.Context, *UpdateIdentityRequest) (*UpdateIdentityResponse, error)
@@ -396,6 +407,9 @@ func (UnimplementedAdminServer) CreateIdentity(context.Context, *CreateIdentityR
 }
 func (UnimplementedAdminServer) GetIdentity(context.Context, *GetIdentityRequest) (*GetIdentityResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetIdentity not implemented")
+}
+func (UnimplementedAdminServer) GetIdentityByIdentifier(context.Context, *GetIdentityByIdentifierRequest) (*GetIdentityByIdentifierResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetIdentityByIdentifier not implemented")
 }
 func (UnimplementedAdminServer) GetIdentitiesByAttribute(context.Context, *GetIdentitiesByAttributeRequest) (*GetIdentitiesByAttributeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetIdentitiesByAttribute not implemented")
@@ -532,6 +546,24 @@ func _Admin_GetIdentity_Handler(srv interface{}, ctx context.Context, dec func(i
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(AdminServer).GetIdentity(ctx, req.(*GetIdentityRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Admin_GetIdentityByIdentifier_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetIdentityByIdentifierRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AdminServer).GetIdentityByIdentifier(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/depot.devtools.auth.v0.identity.admin.Admin/GetIdentityByIdentifier",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AdminServer).GetIdentityByIdentifier(ctx, req.(*GetIdentityByIdentifierRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1090,6 +1122,10 @@ var Admin_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetIdentity",
 			Handler:    _Admin_GetIdentity_Handler,
+		},
+		{
+			MethodName: "GetIdentityByIdentifier",
+			Handler:    _Admin_GetIdentityByIdentifier_Handler,
 		},
 		{
 			MethodName: "GetIdentitiesByAttribute",
