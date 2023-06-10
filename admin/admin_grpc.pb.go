@@ -28,8 +28,8 @@ type AdminClient interface {
 	GetAddresses(ctx context.Context, in *GetAddressesRequest, opts ...grpc.CallOption) (*GetAddressesResponse, error)
 	GetAddress(ctx context.Context, in *GetAddressRequest, opts ...grpc.CallOption) (*GetAddressResponse, error)
 	UpdateAddress(ctx context.Context, in *UpdateAddressRequest, opts ...grpc.CallOption) (*UpdateAddressResponse, error)
-	GetTraits(ctx context.Context, in *GetTraitsRequest, opts ...grpc.CallOption) (*GetTraitsResponse, error)
-	UpdateTraits(ctx context.Context, in *UpdateTraitsRequest, opts ...grpc.CallOption) (*UpdateTraitsResponse, error)
+	GetProfile(ctx context.Context, in *GetProfileRequest, opts ...grpc.CallOption) (*GetProfileResponse, error)
+	UpdateProfile(ctx context.Context, in *UpdateProfileRequest, opts ...grpc.CallOption) (*UpdateProfileResponse, error)
 	GetCredentials(ctx context.Context, in *GetCredentialsRequest, opts ...grpc.CallOption) (*GetCredentialsResponse, error)
 	UpdateCredential(ctx context.Context, in *UpdateCredentialRequest, opts ...grpc.CallOption) (*UpdateCredentialResponse, error)
 	GetIdentityLoginAttempts(ctx context.Context, in *GetIdentityLoginAttemptsRequest, opts ...grpc.CallOption) (*GetIdentityLoginAttemptsResponse, error)
@@ -151,18 +151,18 @@ func (c *adminClient) UpdateAddress(ctx context.Context, in *UpdateAddressReques
 	return out, nil
 }
 
-func (c *adminClient) GetTraits(ctx context.Context, in *GetTraitsRequest, opts ...grpc.CallOption) (*GetTraitsResponse, error) {
-	out := new(GetTraitsResponse)
-	err := c.cc.Invoke(ctx, "/depot.devtools.auth.v0.identity.admin.Admin/GetTraits", in, out, opts...)
+func (c *adminClient) GetProfile(ctx context.Context, in *GetProfileRequest, opts ...grpc.CallOption) (*GetProfileResponse, error) {
+	out := new(GetProfileResponse)
+	err := c.cc.Invoke(ctx, "/depot.devtools.auth.v0.identity.admin.Admin/GetProfile", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *adminClient) UpdateTraits(ctx context.Context, in *UpdateTraitsRequest, opts ...grpc.CallOption) (*UpdateTraitsResponse, error) {
-	out := new(UpdateTraitsResponse)
-	err := c.cc.Invoke(ctx, "/depot.devtools.auth.v0.identity.admin.Admin/UpdateTraits", in, out, opts...)
+func (c *adminClient) UpdateProfile(ctx context.Context, in *UpdateProfileRequest, opts ...grpc.CallOption) (*UpdateProfileResponse, error) {
+	out := new(UpdateProfileResponse)
+	err := c.cc.Invoke(ctx, "/depot.devtools.auth.v0.identity.admin.Admin/UpdateProfile", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -372,8 +372,8 @@ type AdminServer interface {
 	GetAddresses(context.Context, *GetAddressesRequest) (*GetAddressesResponse, error)
 	GetAddress(context.Context, *GetAddressRequest) (*GetAddressResponse, error)
 	UpdateAddress(context.Context, *UpdateAddressRequest) (*UpdateAddressResponse, error)
-	GetTraits(context.Context, *GetTraitsRequest) (*GetTraitsResponse, error)
-	UpdateTraits(context.Context, *UpdateTraitsRequest) (*UpdateTraitsResponse, error)
+	GetProfile(context.Context, *GetProfileRequest) (*GetProfileResponse, error)
+	UpdateProfile(context.Context, *UpdateProfileRequest) (*UpdateProfileResponse, error)
 	GetCredentials(context.Context, *GetCredentialsRequest) (*GetCredentialsResponse, error)
 	UpdateCredential(context.Context, *UpdateCredentialRequest) (*UpdateCredentialResponse, error)
 	GetIdentityLoginAttempts(context.Context, *GetIdentityLoginAttemptsRequest) (*GetIdentityLoginAttemptsResponse, error)
@@ -432,11 +432,11 @@ func (UnimplementedAdminServer) GetAddress(context.Context, *GetAddressRequest) 
 func (UnimplementedAdminServer) UpdateAddress(context.Context, *UpdateAddressRequest) (*UpdateAddressResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateAddress not implemented")
 }
-func (UnimplementedAdminServer) GetTraits(context.Context, *GetTraitsRequest) (*GetTraitsResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetTraits not implemented")
+func (UnimplementedAdminServer) GetProfile(context.Context, *GetProfileRequest) (*GetProfileResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetProfile not implemented")
 }
-func (UnimplementedAdminServer) UpdateTraits(context.Context, *UpdateTraitsRequest) (*UpdateTraitsResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateTraits not implemented")
+func (UnimplementedAdminServer) UpdateProfile(context.Context, *UpdateProfileRequest) (*UpdateProfileResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateProfile not implemented")
 }
 func (UnimplementedAdminServer) GetCredentials(context.Context, *GetCredentialsRequest) (*GetCredentialsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetCredentials not implemented")
@@ -694,38 +694,38 @@ func _Admin_UpdateAddress_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Admin_GetTraits_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetTraitsRequest)
+func _Admin_GetProfile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetProfileRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AdminServer).GetTraits(ctx, in)
+		return srv.(AdminServer).GetProfile(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/depot.devtools.auth.v0.identity.admin.Admin/GetTraits",
+		FullMethod: "/depot.devtools.auth.v0.identity.admin.Admin/GetProfile",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AdminServer).GetTraits(ctx, req.(*GetTraitsRequest))
+		return srv.(AdminServer).GetProfile(ctx, req.(*GetProfileRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Admin_UpdateTraits_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdateTraitsRequest)
+func _Admin_UpdateProfile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateProfileRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AdminServer).UpdateTraits(ctx, in)
+		return srv.(AdminServer).UpdateProfile(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/depot.devtools.auth.v0.identity.admin.Admin/UpdateTraits",
+		FullMethod: "/depot.devtools.auth.v0.identity.admin.Admin/UpdateProfile",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AdminServer).UpdateTraits(ctx, req.(*UpdateTraitsRequest))
+		return srv.(AdminServer).UpdateProfile(ctx, req.(*UpdateProfileRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1156,12 +1156,12 @@ var Admin_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Admin_UpdateAddress_Handler,
 		},
 		{
-			MethodName: "GetTraits",
-			Handler:    _Admin_GetTraits_Handler,
+			MethodName: "GetProfile",
+			Handler:    _Admin_GetProfile_Handler,
 		},
 		{
-			MethodName: "UpdateTraits",
-			Handler:    _Admin_UpdateTraits_Handler,
+			MethodName: "UpdateProfile",
+			Handler:    _Admin_UpdateProfile_Handler,
 		},
 		{
 			MethodName: "GetCredentials",
